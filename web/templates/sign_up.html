@@ -1,0 +1,48 @@
+{% extends "base.html" %} 
+{% block title %}Sign Up{% endblock %}
+{% block csstyle %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup_style.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="roundbox">
+        <form method="POST" class="signup-form">
+            <div class="caption-title">
+                Sign Up
+            </div>
+            <div class="mb-3">
+                <label for="email">Email</label>
+                <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter email"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="first_name">First name</label>
+                <input
+                type="text"
+                class="form-control"
+                id="first_name"
+                name="first_name"
+                placeholder="Enter First Name"
+                />
+            </div> 
+            <div class="mb-3">
+                <label for="last_name">Last name</label>
+                <input
+                type="text"
+                class="form-control"
+                id="last_name"
+                name="last_name"
+                placeholder="Enter Last Name"
+            />
+            </div> 
+            <div style="text-align: center;">   
+                <input class="submit" type="submit" value="Sign Up">
+            </div>
+        </form> 
+    </div>
+    
+{% endblock %}

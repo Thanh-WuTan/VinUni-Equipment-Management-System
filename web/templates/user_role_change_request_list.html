@@ -1,0 +1,62 @@
+{% extends "base.html" %} 
+{% block title %}Request List{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user_category_change_request_list_style.css') }}">
+{% endblock %}
+{% block content %}
+    <table class="table caption-top">
+        <caption>User role change request</caption>
+        <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Current Role</th>
+              <th scope="col">New Role</th>
+              <th scope="col">Request Date</th>
+              <th scope="col">Action</th>
+            </tr>
+          
+            {% for request in user_role_change_request_list %}
+                <tr>
+                    <td>{{ request.user_name }}</td>
+                    <td>{{ ROLE[user_list[request.user_name].access] }}</td>
+                    <td>{{ ROLE[request.new_role] }}</td>
+                    <td>{{ request.date_added }}</td>
+                    <td>
+                        <div style="display: flex; justify-content: start;">
+                            <form action="{{ url_for('auth.accept_user_role_change_request', id=request.id) }}" method="POST">
+                                <input type="hidden" id="userChoice-{{loop.index}}" name="userChoice" value="empty">
+                                <button type="submit" class="btn btn-success btn-circle fa fa-check" onclick="confirm_action{{loop.index}}()"></button>
+                            </form>
+                            <form class="reject-btn" action="{{ url_for('auth.reject_user_role_change_request', id=request.id) }}" method="POST">
+                                <input type="hidden" id="userChoice2-{{loop.index}}" name="userChoice2" value="empty">
+                                <button type="submit" class="btn btn-danger btn-circle fa fa-times" onclick="confirm_action2{{loop.index}}()"></button>
+                            </form>
+                            <script>
+                                function confirm_action{{loop.index}}(){
+                                    if (confirm('Are you sure?') == true)
+                                    document.getElementById("userChoice-{{loop.index}}").value = "True";
+                                    else{
+                                        document.getElementById("userChoice-{{loop.index}}").value = "False"
+                                        return 0;
+                                    }
+                                }   
+                                function confirm_action2{{loop.index}}(){
+                                    if (confirm('Are you sure?') == true)
+                                    document.getElementById("userChoice2-{{loop.index}}").value = "True";
+                                    else{
+                                        document.getElementById("userChoice2-{{loop.index}}").value = "False"
+                                        return 0;
+                                    }
+                                }   
+                            </script> 
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+          </thead>
+    </table> 
+
+{% endblock %}
+
+
+

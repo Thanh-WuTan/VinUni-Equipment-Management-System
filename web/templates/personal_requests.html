@@ -1,0 +1,50 @@
+{% extends "profile.html" %}
+{% block profile_content %}
+    <script>
+        var current = document.getElementsByClassName(" active");
+        current[0].className = current[0].className.replace(" active", "");
+
+        var thispage = document.getElementsByClassName(" tab-item-requests");
+        thispage[0].className+= " active";
+    </script>
+
+    <div class="table-responsive-sm">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Equipment</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">End date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            {% for request in request_list %}
+            <tr>    
+                <td> <a href="/equipments/details/{{request.equip_name}}">{{request.equip_name}}</a> </td>
+                <td>{{request.start_date}}</td>
+                <td>{{request.end_date}}</td>
+                {% if REQUEST_STATUS[request.status] == 'Rejected' %}
+                <td  id="status-{{loop.index}}" class="status-rejected">Rejected</td>
+                {% elif REQUEST_STATUS[request.status] == 'Approved' %}
+                <td id="status-{{loop.index}}" class="status-approved">Approved</td>
+                {% else %}
+                <td id="status-{{loop.index}}" class="status-pending">Pending</td>
+                {% endif %}
+            </tr>
+            {% endfor %} 
+            <script>
+                const total = {{total}}
+                for (let i = 1; i <= total; i++){
+                    if (document.getElementById("status-"+String(i)).className == 'status-approved'){
+                        document.getElementById("btn-approve-"+String(i)).disabled = true;
+                    }
+                    if (document.getElementById("status-"+String(i)).className == 'status-rejected'){
+                        document.getElementById("btn-reject-"+String(i)).disabled = true;
+                    }
+                }   
+            </script>
+        </table>
+        {{ pagination.links }}
+    </div>
+
+{% endblock %}

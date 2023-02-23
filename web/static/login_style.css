@@ -1,0 +1,20 @@
+.container{
+    margin-top: 3rem;
+}
+
+.roundbox{
+    background-color: white;
+    width: 520px;
+    max-height: 270px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+    padding: 1rem 1rem 1rem 1rem;
+}
+
+
+.caption-title{
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+}

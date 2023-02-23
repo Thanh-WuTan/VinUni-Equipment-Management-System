@@ -1,0 +1,36 @@
+{% extends "profile.html" %}
+{% block profile_content %}
+        <script>
+            var current = document.getElementsByClassName(" active");
+            current[0].className = current[0].className.replace(" active", "");
+
+            var thispage = document.getElementsByClassName(" tab-item-details");
+            thispage[0].className+= " active";
+        </script>
+        <table class="profile-table">
+            <tr>
+                <td class="vAlignC" style="width: 160px; text-align:center;">
+                    <div class="user-avatar">
+                        <img src="{{ user.avatar(120) }}">
+                    </div>
+                </td>
+                <td class="vAlignC" style="width:150px; padding-left:2rem;">
+                    Email:
+                    <br>
+                    First name:
+                    <br>
+                    Last name:
+                    <br>
+                    Role:
+                </td>
+                <td class="vAlignC">                   
+                    {{ user.email }}
+                    <br>
+                    {{ user.first_name }}
+                    <br>
+                    {{ user.last_name }}
+                    <br>
+                    {{ ROLE[user.access] }} 
+                </td>
+            </tr>
+{% endblock %}

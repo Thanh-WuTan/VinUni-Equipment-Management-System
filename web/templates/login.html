@@ -1,0 +1,41 @@
+{% extends "base.html" %} 
+{% block title %}Login{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login_style.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="roundbox">
+        <form method="POST" class="login-form">
+            <div class="caption-title">
+                Login
+            </div>
+            <div class="mb-3">
+                <label for="email">Email</label>
+                <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter email"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="password">Password</label>
+                <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter password"
+                />
+            </div> 
+            <div style="text-align: center;">   
+                <input class="submit" type="submit" value="Login">
+            </div>
+            <div style="text-align: right;">
+                <a href="/passwordRecovery" style="font-size: 15px;">Forgot your password?</a>
+            </div>
+        </form> 
+    </div>
+{% endblock %}
+        

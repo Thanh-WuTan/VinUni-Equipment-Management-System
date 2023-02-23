@@ -1,0 +1,88 @@
+
+
+.vAlignT { vertical-align: top; }
+.vAlignC { vertical-align: middle; }
+.vAlignB { vertical-align: bottom; }
+
+.roundbox{
+
+    margin-left: auto;
+    margin-right: auto;
+
+    /* max-width: 600px;
+    height: 200px;  */
+   
+    border-radius: 10px;
+}
+
+
+.edit-profile-icon{
+    width: 30px;
+    height: 30px;
+}
+
+.spacer {
+    display: inline-block;
+    -webkit-box-flex: 1;
+    flex: 1 1 1px;
+}
+
+.tabs{
+    border-bottom:1px solid #ccc;
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.tabs>ul>li>a, .tabs>ul>li>span {
+    margin-right: 2px;
+    line-height: 1.42857;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #555;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.tab-icon {
+    padding-right: 0.3em;
+    color: gray;
+}
+
+.tabs>ul{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 0;
+    padding: 0;
+
+}
+
+
+.tabs>ul>li {
+    position: relative;
+    display: block;
+    color: black;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+/* .edit-your-profile{
+    margin-top: auto;
+    color: black;
+    margin-bottom: auto;
+} */
+
+.profile-table{
+    width: 100%;
+}
+
+.user-name{
+    font-size: 30px;
+    font-weight: 500;
+}

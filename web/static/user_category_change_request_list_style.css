@@ -1,0 +1,28 @@
+.header{
+    display: flex;
+    justify-content: start;
+}
+
+.icon{
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.btn-success{
+    background-color: green;
+}
+
+.reject-btn{
+    margin-left: 5px;
+}
+
+
+.btn-circle {
+    width: 22px;
+    height: 22px;
+    padding: 6px 2px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.3;
+}

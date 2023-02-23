@@ -1,0 +1,136 @@
+body{
+    font-family: "Poppins", sans-serif;
+    background-color: #EEEEEE;
+}
+
+@media all and (min-width: 992px) {
+	.navbar .nav-item .dropdown-menu{ display: none; }
+	.navbar .nav-item:hover .nav-link{   }
+	.navbar .nav-item:hover .dropdown-menu{ display: block; }
+	.navbar .nav-item .dropdown-menu{ margin-top:0; }
+}
+
+nav {   
+    width: 100%;
+    margin: 0 auto;
+    z-index: 500;
+}
+
+#navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+} 
+
+.logo{
+    width: 100%;
+
+    max-width: 246.5px; 
+}
+.nav-item{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.container{
+    padding: 0;
+    padding-top: 130px;
+}
+.spacer {
+    display: inline-block;
+    -webkit-box-flex: 1;
+    flex: 1 1 1px;
+}
+
+.user-links{
+    padding-right: 1rem;
+}
+
+.nav-container{
+    background-color: white;
+}
+
+.nav-above{
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.nav-middle{
+    display: flex; 
+}
+
+.nav-list{
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+
+.nav-middle>ul>li>a {
+    margin-right: 2px;
+    line-height: 1.42857;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: black;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+
+.vAlignT { vertical-align: top; }
+.vAlignC { vertical-align: middle; }
+.vAlignB { vertical-align: bottom; }
+
+
+  
+
+.badge{
+    margin-left: 2rem;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    margin-left: auto;
+    font-size: 11px;
+    color: white;
+    padding-top: 6px;
+    padding-bottom: 0px;
+} 
+
+
+.pagination{
+    display: flex;
+    justify-content: center;
+}
+
+.page-item .page-link:hover{
+    background-color: black;
+    color: white;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: black;
+    background-color: #EEEEEE;
+    border: solid black 1.3px;
+    box-sizing: border-box;
+}
+
+.page-item.disabled .page-link {
+    color: black;
+    pointer-events: none;
+    background-color: #EEEEEE;
+    border-color: #dee2e6;
+}
+
+
+
+.page-link{
+    color: black;
+    background-color: #EEEEEE;
+    border: none;
+}

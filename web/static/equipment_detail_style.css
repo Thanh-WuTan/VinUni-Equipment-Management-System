@@ -1,0 +1,298 @@
+ol, ul{
+    padding: 0
+}
+
+.roundbox{
+    display: block;
+}
+ 
+h1, h2, h3, h4, h5, h6{
+    margin: 0; 
+}
+
+td, th, tr{
+    vertical-align: middle;
+}
+
+table{
+    width: 440px;
+    min-width: 420px;
+}
+
+.th-table{
+    width: 160px;
+    padding-bottom: 5px;
+}
+
+hr.solid {
+    width: 100%;
+    border-top: 1.2px solid black;
+}
+
+ 
+.equip-name{
+    color: #2E5288;
+}
+ 
+
+th{
+    width: 160px;
+     
+}
+
+td{
+    width: 300px; 
+}
+
+.light-text{
+    font-weight: 300;
+}
+
+.md-title{
+    font-size: 23px;
+    font-weight: 600;
+}
+
+p{
+    margin: 0;
+}
+ 
+
+.equip-actions .btn:hover{
+    color: #fff;
+    background-color: #212529;
+    border-color: #212529;
+}
+
+.image{
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin: 15px;
+}
+
+
+.footer{
+    height: 100px;
+}
+
+
+.display-flex{
+    display: flex;
+}
+
+
+.borrow-request-form{
+    background-color: rgb(0,0,0);  
+    background-color: rgba(0,0,0,0.4);   
+    position: fixed;
+    top: 0;
+    left: 0; 
+    z-index: 1060;
+    display: none;
+    width: 100%;
+    height: 100%; 
+    outline: 0;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+
+.modal-form-header{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.borrow-request-form .modal-form-body{
+    overflow-y: auto;
+    position: relative;
+    flex: 1 1 auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    padding: 1rem;
+}
+
+.add-image-form {
+    background-color: rgb(0,0,0);  
+    background-color: rgba(0,0,0,0.4);   
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 250px;
+    z-index: 1060;
+    display: none;
+    width: 100%;
+    height: 100%; 
+    outline: 0;
+}
+
+.close-modal-request-form:hover,
+.close-modal-request-form:focus{
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close-modal-request-form{
+    color: #aaaaaa;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    width: 30px; 
+    height: 30px;
+    text-align: center;
+    padding-right: 1rem;
+
+}
+
+.add-image-form .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 350px;
+    height: 165px;
+}
+  
+.add-image-submitbtn{
+    display: block;
+    width: 100px;
+    margin: auto;
+    margin-top: 0.5rem;   
+}
+
+  /* The Close Button */
+.add-image-form .close-modal-add-image-form {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    width: 20px;
+  }
+  
+.add-image-form .close-modal-add-image-form:hover,
+.add-image-form .close-modal-add-image-form:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.image-list{
+    max-width: 500px;
+    padding-left: 50px;
+}
+
+
+
+.btn-add-img{
+    position: absolute;
+	top: 50%;
+	left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.image-container{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.image{
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+}
+
+.image-container .img-btn-del{
+    display: none;
+    position: absolute;
+	top: 50%;
+	left: 50%;
+    transform: translate(-50%, -50%);
+}
+ 
+
+.admin:hover button{
+    display: block;
+    background-color: #555;
+    color: white
+}
+
+.admin:hover button:hover{
+    background-color: black;
+}
+
+/* The Modal (background) */
+.modal-image {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 150px; 
+    padding-bottom: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;  
+    height: 100%; 
+    overflow: auto;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.9);  
+}
+   
+.modal-image-content {
+    margin: auto;
+    display: block;
+    width: 100%; 
+    max-width: 500px;
+}
+  
+  
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+   
+.close {
+    position: fixed;
+    color: #f1f1f1;
+    top: 100px;
+    right: 70px;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+  
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+      width: 100%;
+    }
+}
+
+

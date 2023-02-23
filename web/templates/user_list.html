@@ -1,0 +1,213 @@
+{% extends "base.html" %} 
+{% block title %}User List{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user_list_style.css') }}">
+{% endblock %}
+{% block content %} 
+    <div class="container-out">
+        <div class="container-in">
+        <div class="searchcontainer">
+            <div class="search-engine">
+                <p class="search-title">Search by username</p>
+                <input
+                    type="text"
+                    name="input"
+                    id="search-input"
+                    autocomplete="off" 
+                />
+            </div>
+            <div class="search-results-wrap">
+                <ul id="search-results"></ul>   
+            </div>
+             
+        </div>
+        </div>
+    </div>
+    <script>
+    
+        function element(id) {
+            return document.getElementById(id);
+        }
+        var ul = document.getElementById('search-results');
+        var liSelected;
+        var index = -1;
+        let allSearchData = ""; 
+        let names = {{ list_of_username | tojson }} 
+        function getResults(){
+            let search = element("search-input").value;
+            allSearchData = ""; //clears data for each word typed
+            index = 0;
+            hideSearchResults();
+            clearSearchResults(); 
+            //starts searching from the second input
+            if (search.length > 0) {
+                let counter = 0; // counts to 10
+                for (let x of names) {
+                    if (counter < 15){
+                        //checks for similarities
+                        if (x.toLowerCase().includes(search.toLowerCase())) {
+                            //populates the suggestion div
+                            element("search-results").innerHTML +=
+                                "<li class='search-item' id=\"\" onclick='displayData(\"" +
+                                x +
+                                "\")'>"+
+                                x +
+                                "</li>";
+
+                            counter++;
+                        }
+                    }
+                    if (x.toLowerCase().includes(search.toLowerCase()))
+                        //saves all the realated names
+                        allSearchData += "<p>" + x + "</p>";
+                }
+                displaySearchResults();        
+            } 
+        }
+        //displays the suggestion div
+        function displaySearchResults() {
+            element("search-results").style.display = "list-item";
+        }
+        //clears the suggestion div
+        function clearSearchResults() {
+            element("search-results").innerHTML = "";
+        }
+        
+        //hides the suggestion div
+        function hideSearchResults() {
+            element("search-results").style.display = "none"; 
+        }
+        //displays names when you click a suggestions
+        function displayData(name) {
+            window.location.href = '/users/search/' + name;
+        }  
+    
+        //gets results after each input
+        element("search-input").oninput = function() {
+            getResults();
+        };
+        
+        
+
+        document.addEventListener('keydown', function(event) {
+        var len = ul.getElementsByTagName('li').length - 1;
+        if (event.which === 40) {
+            index++;
+            //down 
+            if (liSelected) {
+            removeClass(liSelected, 'selected');
+            next = ul.getElementsByTagName('li')[index];
+            if (typeof next !== undefined && index <= len) {
+                liSelected = next;
+                addClass(liSelected, 'selected');
+                console.log(index);
+                } else {
+                index = 0;
+    
+                liSelected = ul.getElementsByTagName('li')[0];
+                addClass(liSelected, 'selected');
+                }
+            } else {
+                index = 0;
+                liSelected = ul.getElementsByTagName('li')[0];
+            }
+
+        } else if (event.which === 38) {
+
+            //up
+            if (liSelected) {
+            removeClass(liSelected, 'selected');
+            index--;
+            console.log(index);
+            next = ul.getElementsByTagName('li')[index];
+            if (typeof next !== undefined && index >= 0) {
+                liSelected = next;
+            } else {
+                index = len;
+                liSelected = ul.getElementsByTagName('li')[len];
+            }
+            addClass(liSelected, 'selected');
+            } else {
+            index = 0;
+            liSelected = ul.getElementsByTagName('li')[len];
+            addClass(liSelected, 'selected');
+            }
+            
+        }
+        }, false);
+
+        function removeClass(el, className) {
+        el.id = ''
+        if (el.classList) {
+            el.classList.remove(className);
+        } else {
+            el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
+        };
+
+        function addClass(el, className) {
+        el.id = className
+        if (el.classList) {
+            el.classList.add(className);
+        } else {
+            el.className += ' ' + className;
+            
+        }
+        };
+        element("search-input").addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                const name = document.getElementById('selected').textContent;
+                window.location.href = '/users/search/' + name;
+            }
+        });
+    </script>
+    <table class="table">
+        <thead>
+            <th class="col-id">#</th>
+            <th class="col">Username</th>
+            <th class="col">First Name</th>
+            <th class="col">Last Name</th>
+            <th class="col">Role</th>
+            {% if current_user.is_authenticated and current_user.access >= 3 %}
+                <th class="col">Action</th>
+            {% endif %}
+        </thead>
+        <tbody>
+                   
+            {% for user in users %}
+                <tr id="user-{{user.user_name}}" class="user-details">
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <a href="{{ url_for('auth.profile', username=user.user_name) }}">{{ user.user_name }}</a>
+                    </td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ ROLE[user.access] }}</td>
+                    {% if current_user.is_authenticated and current_user.access >= 3 %}
+                    <td>
+                        <div style="display: flex;">
+                            <a href="{{ url_for('auth.admin_edit_user_profile', username=user.user_name) }}" class="far fa-edit" style="color:black;text-decoration: none;"></a>
+                            <form action="{{ url_for('auth.admin_delete_user', id=user.id) }}" method="POST">
+                                <input type="hidden" id="userChoice-{{loop.index}}" name="userChoice" value="empty">
+                                <button type="submit" class="btn far fa-trash-alt" onclick="confirm_action{{loop.index}}()"></button>
+                            </form>
+                            <script>
+                                function confirm_action{{loop.index}}(){
+                                    if (confirm('Are you sure?') == true)
+                                        document.getElementById("userChoice-{{loop.index}}").value = "True";
+                                    else{
+                                        document.getElementById("userChoice-{{loop.index}}").value = "False"
+                                        return 0;
+                                    }
+                                }   
+                            </script> 
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}  
+        </tbody>
+    </table>
+    {{ pagination.links }} 
+{% endblock %}
+

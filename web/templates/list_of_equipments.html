@@ -1,0 +1,249 @@
+{% extends "equipments.html" %} 
+{% block equipments_content %} 
+
+    {% if current_user.is_authenticated and current_user.access >= 3 %}
+    <button type="button" class="btn-add-new-equip btn btn-white" data-bs-toggle="modal" data-bs-target="#modal_form_newequip">
+        <i class="tab-icon fa fa-plus"></i>
+        New equipment
+    </button>
+    <div class="modal fade" id="modal_form_newequip" tabindex="-1" aria-labelledby="modal_form_new_equipment" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_form_new_equipment">New equipment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('auth.new_equipment') }}" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="equip-name" class="col-form-label">Equipment name</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            id="equip-name" 
+                            name="equip-name"
+                            required
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-type" class="col-form-label">Type</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            id="equip-type"
+                            name="equip-type"
+                            required
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-owner" class="col-form-label">Owner</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            id="equip-owner"
+                            name="equip-owner"
+                            required
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-location" class="col-form-label">Location</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            id="equip-location" 
+                            name="equip-location"
+                            required
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-status" class="col-form-label">Status</label>
+                            <select class="form-select" id="equip-status" name="equip-status">
+                                <option value="1">Available</option>
+                                <option value="2">Archived</option>
+                                <option value="3">Borrowed</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-working_condition" class="col-form-label">Working condition</label>
+                            <select class="form-select" id="equip-working_condition" name="equip-working_condition">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-description" class="col-form-label">Description</label>
+                            <textarea 
+                            class="form-control" 
+                            id="eqip-description"
+                            name="equip-description"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="equip-comments" class="col-form-label">Comments</label>
+                            <textarea 
+                            class="form-control" 
+                            id="eqip-comments"
+                            name="equip-comments"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Choose images</label>
+                            <input 
+                            type="file" 
+                            name="files[]" 
+                            id="fileInput" 
+                            class="form-control" 
+                            multiple 
+                            accept=".png, .jpg, .jpeg"
+                            >
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="bodycontent">
+        <div class="search-engine">
+            <h3>Search equipments</h3>
+            <form action="">
+                <div class="search-bar">
+                    {% if search_by_name %}
+                    <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Enter a name or barcode" 
+                    name="search"
+                    value="{{search_by_name}}">
+                    {% else%}
+                    <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Enter a name or barcode" 
+                    name="search">
+                    {% endif %}
+                </div>
+            
+                <div class="tag-type">
+                    <label for="Type">Type</label>
+                    <select class="form-select form-select-sm" name="type" id="type">
+                        <option selected value="{{search_by_type}}">{{search_by_type}}</option>
+                        {% if search_by_type != 'All' %}
+                        <option value="All">All</option>
+                        {% endif %}
+                        {% for type in list_of_types %}
+                            {% if type != search_by_type %}
+                                <option value="{{type}}">{{type}}</option>
+                            {% endif %}
+                        {% endfor%}
+                    </select>
+                </div>
+                <div class="tag-location">
+                    <label for="location">Loacation</label>
+                    <select class="form-select form-select-sm" name="location" id="location">
+                    
+                        <option selected value="{{search_by_location}}">{{search_by_location}}</option>
+                        {% if search_by_location != 'All' %}
+                        <option value="All">All</option>
+                        {% endif %}
+                        {% for loca in list_of_locations %}
+                            {% if loca != search_by_location %}
+                                <option value="{{loca}}">{{loca}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="tag-owner">
+                    <label for="owner">Owner</label>
+                    <select class="form-select form-select-sm" name="owner" id="owner">
+                        <option value="{{search_by_owner}}">{{search_by_owner}}</option>
+                        {% if search_by_owner != 'All' %}
+                        <option value="All">All</option>
+                        {% endif %}
+                        {% for owner in list_of_owners %}
+                            {% if owner != search_by_owner %}
+                            <option value="{{owner}}">{{owner}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="search-engine-fotter"> 
+                    <button class="btn" type="submit"><i class="fa fa-search"></i> Search</button>
+                    <a class="btn" href="/equipments"><i class="fa fa-refresh"></i> Reset</a>
+                </div>
+            </form>
+                
+            {% if total == 0 %}
+                <p>No results found...</p>
+            {% endif %}
+        </div>
+    {% if total > 0 %}
+    <div class="table-content"> 
+    <table class="table ">
+        <tbody> 
+            {% for equip in equipments %}
+                <tr class="row-equipment">
+                    <td id="equip{{equip.id}}"> 
+                        <div class="table-item">
+                            <span class="equip-id"> 
+                                {{ loop.index + (page-1) * per_page }} 
+                            </span>
+                            <div class="equipment-wrap">
+                                <div class="equip-img">
+                                    {% if equip.id in images.keys() %}
+                                    <img class="equip-image" src="/images/{{images[equip.id][0]}}">
+                                    {% else %}
+                                    <img class="equip-image" src="https://www.svgrepo.com/show/173339/pc-equipment.svg">
+                                    {% endif %}
+                                </div>
+                                <ul class="item-details" >
+                                    <li class="equip-type infor" > {{ equip.type }} </li>
+                                    <li> <span class="equip-name"> {{ equip.name }} </span> </li>
+                                    <li> 
+                                        <span class="bold-text">Barcode: </span> 
+                                        <span>#</span>
+                                    </li>
+                                    <li class="equip-owner infor"> 
+                                        <span class="bold-text">Owner:</span> 
+                                        <span>{{ equip.owner }}</span> 
+                                    </li>
+                                    <li class="equip-location infor"> 
+                                        <span class="bold-text">Location:</span> 
+                                        <span>{{ equip.location }}</span>  
+                                    </li>
+                                    <li class="equip-working-condition infor"> 
+                                        <span class="bold-text">Working condition:</span> 
+                                        <span>{{ equip.working_condition }}</span>  
+                                    </li>
+                                    {% if equip.status == 1 %}
+                                    <li id="equip-status" class="equip-status green infor"> {{ STATUS[equip.status] }} </li>
+                                    {% else %}
+                                    <li id="equip-status" class="equip-status red infor"> {{ STATUS[equip.status] }} </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <script>
+                    var row = document.getElementById("equip{{equip.id}}")
+                    row.onclick = function(){
+                        location.href = "{{ url_for('auth.equipment_details', equip_name=equip.name) }}"
+                    }
+                </script>
+            {% endfor %}  
+        </tbody>
+    </table>
+    {{ pagination.links }}
+    </div>
+    {% endif %}
+
+    
+    </div>
+   
+
+{% endblock %}
+

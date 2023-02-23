@@ -1,0 +1,65 @@
+{% extends "base.html" %} 
+{% block title %}User List{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user_list_style.css') }}">
+{% endblock %}
+{% block content %} 
+    <div class="above" style="margin-bottom: 10px;">
+        <a href="/" style="text-decoration: none; color: black;">Home</a>
+        /
+        <a href="/users" style="text-decoration: none; color: black;">Users</a>
+        /
+        Search
+    </div>
+    
+
+    <table class="table ">
+        <thead>
+            <th class="col-id ">#</th>
+            <th class="col">Username</th>
+            <th class="col">First Name</th>
+            <th class="col">Last Name</th>
+            <th class="col">Role</th>
+            {% if current_user.is_authenticated and current_user.access >= 3 %}
+                <th class="col">Action</th>
+            {% endif %}
+        </thead>
+        <tbody>
+                   
+            {% for user in users %}
+                <tr id="user-{{user.user_name}}" class="user-details">
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <a href="{{ url_for('auth.profile', username=user.user_name) }}">{{ user.user_name }}</a>
+                    </td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ ROLE[user.access] }}</td>
+                    {% if current_user.is_authenticated and current_user.access >= 3 %}
+                    <td>
+                        <div style="display: flex;">
+                            <a href="{{ url_for('auth.admin_edit_user_profile', username=user.user_name) }}" class="far fa-edit" style="color:black;text-decoration: none;"></a>
+                            <form action="{{ url_for('auth.admin_delete_user', id=user.id) }}" method="POST">
+                                <input type="hidden" id="userChoice-{{loop.index}}" name="userChoice" value="empty">
+                                <button type="submit" class="btn far fa-trash-alt" onclick="confirm_action{{loop.index}}()"></button>
+                            </form>
+                            <script>
+                                function confirm_action{{loop.index}}(){
+                                    if (confirm('Are you sure?') == true)
+                                        document.getElementById("userChoice-{{loop.index}}").value = "True";
+                                    else{
+                                        document.getElementById("userChoice-{{loop.index}}").value = "False"
+                                        return 0;
+                                    }
+                                }   
+                            </script> 
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}  
+        </tbody>
+    </table>
+    {{ pagination.links }}
+{% endblock %}
+

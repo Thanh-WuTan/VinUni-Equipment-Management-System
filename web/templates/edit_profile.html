@@ -1,0 +1,111 @@
+{% extends "profile.html" %} 
+{% block profile_content %}
+        <script>
+            var current = document.getElementsByClassName(" active");
+            current[0].className = current[0].className.replace(" active", "");
+
+            var thispage = document.getElementsByClassName(" tab-item-edit-profile");
+            thispage[0].className+= " active";
+        </script>
+        <form class="edit-form" method="POST">
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input 
+                    type="text" 
+                    readonly 
+                    class="form-control-plaintext" 
+                    id="staticEmail" value={{current_user.email}}
+                >
+                </div>
+              </div>
+            
+              <div class="mb-3 row">
+                <label for="new_first_name" class="col-sm-2 col-form-label">First name</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="new_first_name"
+                        name="new_first_name"
+                    > 
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="new_last_name" class="col-sm-2 col-form-label">Last name</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="new_last_name"
+                        name="new_last_name"
+                    > 
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="old_password" class="col-sm-2 col-form-label">Old password</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        id="old_password"
+                        name="old_password"
+                    > 
+                </div>
+                <div id="emailHelp" class="form-text">Leave it blank if you do not want to change the password</div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="new_password" class="col-sm-2 col-form-label">New password</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        id="new_password"
+                        name="new_password"
+                    > 
+                </div>
+            </div>
+            
+            
+
+            <div class="mb-3 row">
+                <label for="confirm_new_password" class="col-sm-2 col-form-label">Confirm new password</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        id="confirm_new_password"
+                        name="confirm_new_password"
+                    > 
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="new_category" class="col-sm-2 col-form-label">Role</label>
+                <div class="col-sm-10">    
+                    <select class="form-select" id="new_category" name="new_category">
+                        <option selected value="{{ current_user.access }}">{{ ROLE[current_user.access] }}</option>
+                        {% if current_user.access != 0 %}
+                            <option value="0">Guest</option>
+                        {% endif %}    
+                        {% if current_user.access != 1%}
+                            <option value="1">Research Assistant</option>
+                        {% endif %}
+                        {% if current_user.access != 2 %} 
+                            <option value="2">Project PI</option>
+                        {% endif %}
+                        {% if current_user.access != 3 %}
+                            <option value="3">Lab Manager</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: center;">   
+                <input class="submit" type="submit" value="Save changes">
+            </div>
+        </form>
+        <div class="footer" style="margin-bottom: 2rem;"> </div>
+{% endblock %}
+

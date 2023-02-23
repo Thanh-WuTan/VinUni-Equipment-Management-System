@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='assigned_equipments.css') }}">
+{% endblock %}
+
+{% block title %}{{user.user_name}}{% endblock %}
+{% block content %}
+    <div class="roundbox">
+        <div class="tabs">
+            <h2 class="user-name">
+                {{ user.user_name }}
+            </h2>
+            <span class="spacer"></span>
+            <ul>
+                <li class="tab-item">
+                    <a href="/profile/{{user.user_name}}">
+                        <i class="tab-icon fa fa-info-circle"></i>
+                        About
+                    </a>
+                </li>
+                <li class="tab-item">
+                    <a href="/profile/{{user.user_name}}/assigned-equipments">
+                        <i class="tab-icon fa fa-puzzle-piece"></i>
+                        Assigned equipments
+                    </a>
+                </li>
+                {% if current_user.is_authenticated and current_user == user %}
+                <li class="tab-item">
+                    <a href="{{ url_for('auth.editprofile', username=user.user_name) }}">
+                        <i class="tab-icon fa fa-edit"></i>
+                        Edit your profile
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <br>
+        <table class="table caption-top">
+            
+            
+        </table> 
+    </div>
+{% endblock %}

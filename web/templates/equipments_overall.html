@@ -1,0 +1,119 @@
+{% extends "equipments.html" %} 
+{% block equipments_content %}
+<div class="table-responsive-sm">
+    <table class="table  table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Good working condition</th>
+                <th scope="col">Poor working condition</th>
+                <th scope="col">Being borrowed</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <th> 
+                    <span id="search_by_type{{loop.index}}" style="cursor:pointer"> {{row[0]}} </span>
+                    <script>
+                        var search_by_type = document.getElementById("search_by_type{{loop.index}}")
+                        search_by_type.onclick = function(){
+                            var myform = document.createElement('form');
+                            myform.action = "/equipments";
+
+                            var hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = 'type';
+                            hiddenField.value = '{{row[0]}}';
+                      
+                            myform.appendChild(hiddenField);
+                            document.body.appendChild(myform);
+                            myform.submit();
+                        }
+                    </script>
+                </th>
+                <td> 
+                    <span id="search_by_working_condtion{{loop.index}}"  style="cursor:pointer">{{row[1]}}</span> 
+                    <script>
+                        var search_by_working_condtion = document.getElementById("search_by_working_condtion{{loop.index}}")
+                        search_by_working_condtion.onclick = function(){
+                            var myform = document.createElement('form');
+                            myform.action = "/equipments";
+
+                            var hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = 'working_condition';
+                            hiddenField.value = 'Yes';
+                            myform.appendChild(hiddenField);
+
+                            var hiddenField2 = document.createElement('input');
+                            hiddenField2.type = 'hidden';
+                            hiddenField2.name = 'type';
+                            hiddenField2.value = '{{row[0]}}'
+                            myform.appendChild(hiddenField2)
+                            document.body.appendChild(myform);
+                            myform.submit();
+                        }
+                    </script>
+                </td>
+                <td> 
+                    <span id="search_by_working_condtionNo{{loop.index}}" style="cursor:pointer">{{row[2]}}</span> 
+                    <script>
+                        var search_by_working_condtionNo = document.getElementById("search_by_working_condtionNo{{loop.index}}")
+                        search_by_working_condtionNo.onclick = function(){
+                            var myform = document.createElement('form');
+                            myform.action = "/equipments";
+
+                            var hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = 'working_condition';
+                            hiddenField.value = 'No';
+                            myform.appendChild(hiddenField);
+
+                            var hiddenField2 = document.createElement('input');
+                            hiddenField2.type = 'hidden';
+                            hiddenField2.name = 'type';
+                            hiddenField2.value = '{{row[0]}}'
+                            myform.appendChild(hiddenField2)
+                            document.body.appendChild(myform);
+                            myform.submit();
+                        }
+                    </script>
+                </td>
+                <td> 
+                    <span id="search_by_status{{loop.index}}" style="cursor:pointer">{{row[3]}}</span> 
+
+                    <script>
+                        var search_by_status = document.getElementById("search_by_status{{loop.index}}")
+                        search_by_status.onclick = function(){
+                            var myform = document.createElement('form');
+                            myform.action = "/equipments";
+
+                            var hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = 'status';
+                            hiddenField.value = '3';
+                            myform.appendChild(hiddenField);
+
+                            var hiddenField2 = document.createElement('input');
+                            hiddenField2.type = 'hidden';
+                            hiddenField2.name = 'type';
+                            hiddenField2.value = '{{row[0]}}'
+                            myform.appendChild(hiddenField2)
+                            document.body.appendChild(myform);
+                            myform.submit();
+                        }
+                    </script>
+                </td>
+                <td> 
+                    <span style="cursor:pointer">{{row[4]}}</span> 
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    
+    </table>
+</div>
+{% endblock %}
+    

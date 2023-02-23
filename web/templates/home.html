@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+{% block title %}Home{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
+{% endblock %}
+{% block content %}         
+
+<div class="notification-container">
+    <button id="notification-btn" onclick="showNotifications()">
+        <i class="material-icons">notifications</i>
+        Notifications
+        <span id="unread-count">99</span>
+    </button>
+    <div id="notification-dropdown" class="notification-dropdown-content">
+        
+            <p class="unread">
+                hi
+                <button class="mark-read-btn" onclick="markAsRead(1)">Mark as read</button>
+                <button class="mark-unread-btn" onclick="markAsUnread(1)">Mark as unread</button>
+            </p>
+    </div>
+</div>
+<script>
+    function showNotifications() {
+        var dropdown = document.getElementById("notification-dropdown");
+        if (dropdown.classList.contains("show")) {
+            dropdown.classList.remove("show");
+        } else {
+            dropdown.classList.add("show");
+            // Count the number of unread notifications
+            var unreadCount = document.getElementsByClassName("unread").length;
+            // Update the text content of the badge
+            var unreadCountSpan = document.getElementById("unread-count");
+            unreadCountSpan.textContent = unreadCount;
+        }
+    }
+</script>
+{% endblock %}
+

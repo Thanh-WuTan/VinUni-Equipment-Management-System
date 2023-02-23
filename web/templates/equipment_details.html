@@ -1,0 +1,456 @@
+{% extends "base.html" %} 
+{% block title %}Equipment details{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='equipment_detail_style.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="roundbox">
+        <h2 class="equip-name">{{equip.name}}</h2>
+
+        <br>
+        <div class="display-flex">
+            <div class="equip-information">
+                <div class="equip-details">
+                    <table>
+                        <thead>
+                            <th class="md-title light-text header">Details</th>
+                            <td>
+                                <hr class="solid">
+                            </td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Type</th>
+                                <td>{{equip.type}}</td>
+                            </tr>
+                            <tr>
+                                <th>Barcode</th>
+                                <td>#</td>
+                            </tr>
+                            <tr>
+                                <th>Owner</th>
+                                <td>{{equip.owner}}</td>
+                            </tr>
+                            <tr>
+                                <th>Location</th>
+                                <td>{{equip.location}}</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>{{STATUS[equip.status]}}</td>
+                            </tr>
+                            <tr>
+                                <th>Working condition</th>
+                                <td>{{equip.working_condition}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <br>
+                <div class="equip-description">
+                    <table>
+                        <thead>
+                            <th class="md-title light-text header">Description</th>
+                            <td>
+                                <hr class="solid">
+                            </td>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td colspan="2">
+                                    {% set lines = equip.description.split("\n") %}
+                                    {% for line in lines %}
+                                    <p>{{line}}</p>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <br>
+                <div class="equip-comments">
+                    <table>
+                        <thead>
+                            <th class="md-title light-text header">Comments</th>
+                            <td>
+                                <hr class="solid">
+                            </td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    {% set lines = equip.comments.split("\n") %}
+                                    {% for line in lines %}
+                                    <p>{{line}}</p>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <br>
+                <div class="equip-actions">
+                    <table>
+                        <thead>
+                            <th class="md-title light-text header">Actions</th>
+                            <td>
+                                <hr class="solid">
+                            </td>
+                        </thead>
+                        <tbody>
+                            {% if current_user.is_authenticated %}
+                            {% if  equip.status == 1  %}
+                            <tr>
+                                <td colspan="2">
+                                    <button id="modal-btn-request-form" class="btn">
+                                        <i class="fa fa-plus-square"></i>
+                                        Request
+                                    </button>
+                                    <div id="modal-request-form" class="borrow-request-form">
+                                        <div class="modal-dialog modal-dialog-scrollable">
+
+                                            <div class="modal-content">
+                                                <div style="width:100%; text-align: right;">
+                                                    <span  id="close-modal-request-form" class="close-modal-request-form">&times;</span>
+                                                </div>
+                                                <div class="modal-form-header">
+                                                    <h3>New request</h3>
+                                                </div>
+                                                <div class="modal-form-body">
+                                                    <form action="{{ url_for('auth.send_request', user_name = current_user.user_name, equip_name = equip.name) }}" method="POST">
+                                                        <div class="mb-3">
+                                                            <label for="term_of_use" class="col-form-label">Term of use</label>
+                                                            <select class="form-select" name="term_of_use" id="term_of_use">
+                                                                <option selected value="Borrow">Borrow</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="start_date">Start date</label>
+                                                            <input id="start_date" name="start_date" class="form-control" required type="date" />
+                                                            <span id="start_date"></span>
+                                                            <script> 
+                                                                var currentDate = new Date().toISOString().split('T')[0];
+                                                                document.getElementById("start_date").setAttribute("min", currentDate);
+
+                                                                const maxDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                                                                document.getElementById("start_date").setAttribute('max', maxDate);
+                                                            </script>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="end_date">End date</label>
+                                                            <input id="end_date" name="end_date" class="form-control" required type="date" />
+                                                            <span id="end_date"></span>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="pickup_location">Pickup location</label>
+                                                            <input 
+                                                            class="form-control" 
+                                                            type="text" 
+                                                            name="pickup_location" 
+                                                            id="pickup_location" 
+                                                            disabled value="{{equip.location}}"> 
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="comments" class="col-form-label">Comments</label>
+                                                            <textarea 
+                                                            class="form-control" 
+                                                            id="comments"
+                                                            name="comments"
+                                                            ></textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <button type="submit" class="btn btn-dark">Submit</button>
+                                                        </div>
+
+                                                        <script>
+                                                            const startDate = document.getElementById('start_date');
+                                                            const endDate = document.getElementById('end_date');
+                                                            endDate.addEventListener('change', () => {
+                                                                if (startDate.value > endDate.value) {
+                                                                    alert('Start date must be before end date');
+                                                                    endDate.value = '';
+                                                                }
+                                                            });
+                                                            document.querySelector('form').addEventListener('submit', (event) => {
+                                                                // Check if the start date is after the end date
+                                                                if (startDate.value > endDate.value) {
+                                                                    alert('Start date must be before end date');
+                                                                    event.preventDefault();
+                                                                }
+                                                            });
+                                                        </script>
+                                                    </form>
+                                                </div>
+
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        var mdl = document.getElementById("modal-request-form");
+
+                                        var btn_ = document.getElementById("modal-btn-request-form");
+
+                                        var cls = document.getElementById("close-modal-request-form")
+                                        
+                                        btn_.onclick = function(){
+                                            mdl.style.display = "block";
+                                        }
+
+                                        cls.onclick = function(){
+                                            mdl.style.display = "none"
+                                        }
+                                    
+                                    </script>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% if current_user.access >= 3 %}
+                            <tr>
+                                <td colspan="2">
+                                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="tab-icon fa fa-edit"></i>
+                                        Edit details
+                                    </button>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit details</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="POST" action="{{ url_for('auth.edit_equipment_details', equip_name=equip.name) }}" enctype="multipart/form-data">
+                                                        <div class="mb-3">
+                                                            <label for="equip-name" class="col-form-label">Equipment name</label>
+                                                            <input 
+                                                            type="text" 
+                                                            class="form-control" 
+                                                            id="equip-name" 
+                                                            name="equip-name"
+                                                            required
+                                                            value="{{equip.name}}"
+                                                            >
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-type" class="col-form-label">Type</label>
+                                                            <input 
+                                                            type="text" 
+                                                            class="form-control" 
+                                                            id="equip-type"
+                                                            name="equip-type"
+                                                            required
+                                                            value="{{equip.type}}"
+                                                            >
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-owner" class="col-form-label">Owner</label>
+                                                            <input 
+                                                            type="text" 
+                                                            class="form-control" 
+                                                            id="equip-owner"
+                                                            name="equip-owner"
+                                                            required
+                                                            value="{{equip.type}}"
+                                                            >
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-location" class="col-form-label">Location</label>
+                                                            <input 
+                                                            type="text" 
+                                                            class="form-control" 
+                                                            id="equip-location" 
+                                                            name="equip-location"
+                                                            required
+                                                            value="{{equip.location}}"
+                                                            >
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-status" class="col-form-label">Status</label>
+                                                            <select class="form-select" id="equip-status" name="equip-status">
+                                                                <option selected value="{{ equip.status }}">{{ STATUS[equip.status] }}</option>
+                                                                {% if equip.status != 1 %}
+                                                                <option value="1">Available</option>
+                                                                {% endif %}
+                                                                {% if equip.status != 2 %}
+                                                                <option value="2">Archived</option>
+                                                                {% endif %}
+                                                                {% if equip.status != 3 %}
+                                                                <option value="3">Borrowed</option>
+                                                                {% endif %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-working_condition" class="col-form-label">Working condition</label>
+                                                            <select class="form-select form-select-sm" id="equip-working_condition" name="equip-working_condition">
+                                                                <option selected value="{{ equip.working_condition }}">{{ equip.working_condition }}</option>
+                                                                {% if equip.working_condition != 'Yes' %}
+                                                                <option value="Yes">Yes</option>
+                                                                {% else %}
+                                                                <option value="No">No</option>
+                                                                {% endif %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-description" class="col-form-label">Description</label>
+                                                            <textarea 
+                                                            class="form-control" 
+                                                            id="eqip-description"
+                                                            name="equip-description"
+                                                            >{{equip.description}}</textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="equip-comments" class="col-form-label">Comments</label>
+                                                            <textarea 
+                                                            class="form-control" 
+                                                            id="eqip-comments"
+                                                            name="equip-comments"
+                                                            >{{equip.comments}}</textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-dark">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <form action="{{ url_for('auth.delete_equipment', id=equip.id) }}" method="POST">
+                                        <input type="hidden" id="userChoice" name="userChoice" value="empty">
+                                        <button type="submit" class="btn" onclick="confirm_action()"> 
+                                            <i class="fa fa-trash"></i>
+                                            Delete equipment
+                                        </button>
+                                    </form>
+                                    <script>
+                                        function confirm_action(){
+                                            if (confirm('Are you sure?') == true){
+                                                document.getElementById("userChoice").value = "True";
+                                            }
+                                            else{
+                                                document.getElementById("userChoice").value = "False"
+                                                return 0;
+                                            } 
+                                        }   
+                                    </script>
+                                </td>
+                            </tr>
+                            {% endif %}  
+                            {% else %}
+                                <tr>
+                                    <td> Please login to see options </td>
+                                </tr>
+                            {% endif %}        
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <br>
+            </div>
+            <div class="image-list">
+                {% for image in images %}
+
+                <div class="image-container">
+                    <img id="myImg{{loop.index}}" class="image" src="/images/{{image.filepath}}" alt="equip">
+                    <form action="{{ url_for('auth.delete_image', equip_name=equip.name, id=image.id) }}" method="POST">
+                        <input type="hidden" id="userChoice_del_img" name="userChoice_del_img" value="empty">
+                        <button type="submit" class="btn img-btn-del" onclick="del_img()"> 
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </button>
+                    </form>
+                    <script>
+                        function del_img(){
+                            if (confirm('Are you sure?') == true){
+                                document.getElementById("userChoice_del_img").value = "True";
+                            }
+                            else{
+                                document.getElementById("userChoice_del_img").value = "False"
+                                return 0;
+                            } 
+                        }   
+                    </script>
+                    <div id="myModal{{loop.index}}" class="modal-image">
+                        <p id="close{{loop.index}}" class="close">&times;</p>
+                        <img class="modal-image-content" id="img{{loop.index}}">
+                    </div>
+                    <script>
+                        var modal = document.getElementById("myModal{{loop.index}}");
+                        
+                        var img = document.getElementById("myImg{{loop.index}}");
+                        var modalImg = document.getElementById("img{{loop.index}}");
+                        img.onclick = function(){
+                          modal.style.display = "block";
+                          modalImg.src = this.src;
+                        }
+                        
+                        var span = document.getElementById("close{{loop.index}}");
+                        
+                        span.onclick = function() { 
+                            modal.style.display = "none";
+                        }
+                    </script>
+                </div>
+                
+               
+                {% endfor %}
+                
+                {% if current_user.is_authenticated and current_user.access >= 3 %}
+                    <script>
+                        const elementArray = document.getElementsByClassName("image-container");
+                        for (var i = 0; i < elementArray.length; i++){
+                            elementArray[i].className+= " admin";
+                        }
+                    </script>
+
+                    {% if len_image < 4 %}
+                        <div class="add-image-container">
+                            <button id="modal-btn-add-image-form" class="btn btn-outline-dark">
+                                Add an image
+                            </button>
+                        </div>
+                        <div id="modal-add-image-form" class="add-image-form">
+                            <div class="modal-content">
+                                <span class="close-modal-add-image-form">&times;</span>
+                                <form method="POST" action="{{ url_for('auth.add_image', equip_name=equip.name) }}" enctype="multipart/form-data">
+                                    <input type="file" name="imagefile[]" id="fileInput" class="form-control" accept=".png, .jpg, .jpeg">
+                                    <button type="submit" class="btn btn-secondary add-image-submitbtn">Submit</button>            
+                                </form>
+                            </div>
+                        </div> 
+                            
+                        <script>
+                            var modal_form = document.getElementById("modal-add-image-form");
+                            
+                            var btn = document.getElementById("modal-btn-add-image-form");
+                            
+                            var span = document.getElementsByClassName("close-modal-add-image-form")[0];
+                            
+                            btn.onclick = function() {
+                                modal_form.style.display = "block";
+                            }
+                            
+                            span.onclick = function() {
+                                modal_form.style.display = "none";
+                            }
+                        </script>    
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        
+    </div>
+{% endblock %}
+

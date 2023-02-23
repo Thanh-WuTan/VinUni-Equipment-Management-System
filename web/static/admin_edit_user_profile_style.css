@@ -1,0 +1,19 @@
+.container{
+    height: 100vh;
+    width: 100vw;
+}
+
+.roundbox{
+    background-color: #EEEEEE;
+    max-width: 740px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+    padding: 1rem 1rem 1rem 1rem;
+}
+
+
+.user-name{
+    font-size: 30px;
+    font-weight: 500;
+}

@@ -1,0 +1,79 @@
+{% extends "base.html" %} 
+{% block title %}Edit Profile{% endblock %}
+{% block csstyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admin_edit_user_profile_style.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="roundbox">
+        <div class="user-name">
+            {{user.user_name}}
+        </div>
+        <form method="POST">
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="text" 
+                        readonly 
+                        class="form-control-plaintext" 
+                        id="staticEmail" value={{user.email}}
+                    >
+                    </div>
+                </div>
+            
+                <div class="mb-3 row">
+                    <label for="new_first_name" class="col-sm-2 col-form-label">First name</label>
+                    <div class="col-sm-10">
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="new_first_name"
+                            name="new_first_name"
+                            placeholder="{{user.first_name}}"
+                        > 
+                    </div>
+                </div>
+
+            <div class="mb-3 row">
+                <label for="new_last_name" class="col-sm-2 col-form-label">Last name</label>
+                <div class="col-sm-10">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="new_last_name"
+                        name="new_last_name"
+                        placeholder="{{user.last_name}}"
+                    > 
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="new_category" class="col-sm-2 col-form-label">Role</label>
+                <div class="col-sm-10">    
+                    <select class="form-select" id="new_category" name="new_category">
+                        <option selected value="{{ current_user.access }}">{{ ROLE[user.access] }}</option>
+                        {% if user.access != 0 %}
+                            <option value="0">Guest</option>
+                        {% endif %}    
+                        {% if user.access != 1%}
+                            <option value="1">Research Assistant</option>
+                        {% endif %}
+                        {% if user.access != 2 %} 
+                            <option value="2">Project PI</option>
+                        {% endif %}
+                        {% if user.access != 3 and current_user.access >= 3 %}
+                            <option value="3">Lab Manager</option>
+                        {% endif %}
+                        {% if user.access != 4 and current_user.access >= 4 %}
+                            <option value="4">Admin</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: center;">   
+                <input class="submit" type="submit" value="Save changes">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
